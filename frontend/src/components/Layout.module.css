@@ -1,0 +1,110 @@
+.shell {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 224px;
+  flex-shrink: 0;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  padding: 22px 20px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logoIcon {
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.logoText { font-size: 15px; font-weight: 600; letter-spacing: .3px; }
+.logoSub  { font-size: 10px; color: var(--text3); font-family: var(--mono); letter-spacing: .8px; }
+
+.nav {
+  flex: 1;
+  padding: 12px 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text2);
+  font-size: 13.5px;
+  transition: all .15s;
+  position: relative;
+}
+.navItem:hover { background: rgba(255,255,255,.04); color: var(--text); }
+.navItem.active { background: rgba(79,142,247,.1); color: var(--accent); font-weight: 500; }
+.navItem i { font-size: 17px; }
+
+.sidebarBottom {
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.userCard {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg3);
+  border-radius: var(--radius-sm);
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.userName { font-size: 12.5px; font-weight: 500; }
+.userRole { font-size: 11px; color: var(--text3); text-transform: capitalize; }
+
+.logoutBtn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text3);
+  padding: 4px;
+  border-radius: 4px;
+  transition: color .15s;
+}
+.logoutBtn:hover { color: var(--danger); }
+.logoutBtn i { font-size: 16px; display: block; }
+
+.main {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}

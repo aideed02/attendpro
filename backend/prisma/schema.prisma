@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id            String       @id @default(uuid())
+  name          String
+  workStartTime String       @default("09:00")
+  workEndTime   String       @default("18:00")
+  lateThreshold Int          @default(15)
+  workingDays   String[]     @default(["Mon","Tue","Wed","Thu","Fri"])
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  employees     Employee[]
+  departments   Department[]
+  admins        Admin[]
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("HR_MANAGER")
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Department {
+  id        String     @id @default(uuid())
+  name      String
+  companyId String
+  company   Company    @relation(fields: [companyId], references: [id])
+  employees Employee[]
+  createdAt DateTime   @default(now())
+
+  @@unique([name, companyId])
+}
+
+model Employee {
+  id             String       @id @default(uuid())
+  employeeCode   String       @unique
+  name           String
+  email          String       @unique
+  phone          String?
+  role           String
+  departmentId   String
+  department     Department   @relation(fields: [departmentId], references: [id])
+  companyId      String
+  company        Company      @relation(fields: [companyId], references: [id])
+  fingerprintId  String?      @unique
+  status         String       @default("Active")
+  photo          String?
+  attendance     Attendance[]
+  qrTokens       QRToken[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Attendance {
+  id         String    @id @default(uuid())
+  employeeId String
+  employee   Employee  @relation(fields: [employeeId], references: [id])
+  date       DateTime  @db.Date
+  checkIn    DateTime?
+  checkOut   DateTime?
+  status     String    // Present, Late, Absent, Leave
+  method     String    @default("Manual") // Fingerprint, QR, Manual
+  hours      Float?
+  notes      String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@unique([employeeId, date])
+  @@index([date])
+  @@index([employeeId])
+}
+
+model QRToken {
+  id         String   @id @default(uuid())
+  token      String   @unique @default(uuid())
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  expiresAt  DateTime
+  used       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model Device {
+  id        String   @id @default(uuid())
+  name      String
+  location  String
+  ipAddress String
+  type      String   @default("Fingerprint") // Fingerprint, QR
+  status    String   @default("Online")
+  companyId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
